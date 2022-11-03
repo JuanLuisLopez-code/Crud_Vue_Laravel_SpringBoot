@@ -1,5 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import TodoList from '../views/TodoList.vue'
+import TodoCreate from '../views/TodoCreate.vue'
+import TodoUpdate from '../views/TodoUpdate.vue'
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -7,13 +10,17 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: HomeView
+      component: TodoList
     },
-//home_empty prueba para redirect
     {
-      path: '/home_empty',
-      name: '/home_empty',
-      component: HomeView
+      path: '/create',
+      name: 'create',
+      component: TodoCreate
+    },
+    {
+      path: '/update/:id',
+      name: 'update',
+      component: TodoUpdate
     }
   ]
 })

@@ -9,7 +9,7 @@
                 <RouterLink to="/">Home</RouterLink>
             </li>
             <li>
-                <RouterLink to="/home_empty">Home empty</RouterLink>
+                <RouterLink to="/create">Create</RouterLink>
             </li>
         </ul>
     </main>
