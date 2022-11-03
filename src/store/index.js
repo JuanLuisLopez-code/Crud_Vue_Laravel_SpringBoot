@@ -27,13 +27,6 @@ export default Vuex.createStore({
             let index = state.todolist.findIndex((item)=>item.id === payload.todoitem.id);
             state.todolist[index] = payload.todoitem;
         },
-        [Constant.INITIALIZE_TODOITEM] :(state,payload)=> {
-            if (payload && payload.todoitem) {
-                state.todoitem = payload.todoitem;
-            } else {
-                state.todoitem = { id: "", name: "", done: false };
-            }  
-        },
     },
     actions: {
         [Constant.ADD_TODO] : (store, payload) => {
@@ -48,8 +41,5 @@ export default Vuex.createStore({
         [Constant.UPDATE_TODO] : (store, payload) => { 
             store.commit(Constant.UPDATE_TODO, payload);
         },
-        [Constant.INITIALIZE_TODOITEM] : (store, payload) => { 
-            store.commit(Constant.INITIALIZE_TODOITEM, payload);
-        }
     }
 });

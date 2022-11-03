@@ -39,7 +39,6 @@ export default {
             store.dispatch(Constant.DELETE_TODO, { id });
         }
         const editTodo = (id) => {
-            // store.dispatch(Constant.INITIALIZE_TODOITEM, { todoitem: { ...props.todoitem } });
             router.push({ name: 'update', params: { id } })
         }
 
