@@ -1,6 +1,11 @@
 import Vuex from "vuex";
 import Constant from '../Constant';
 import shortid from 'shortid';
+import { createToaster } from "@meforma/vue-toaster";
+
+const toaster = createToaster({ position:"top-right"});
+
+
 export default Vuex.createStore({
     state: {
         todolist: [
@@ -29,15 +34,19 @@ export default Vuex.createStore({
     },
     actions: {
         [Constant.ADD_TODO] : (store, payload) => {
+            toaster.success(`Table added`);
             store.commit(Constant.ADD_TODO, payload);
         },
         [Constant.DELETE_TODO] : (store, payload) => { 
+            toaster.success(`Table deleted`);
             store.commit(Constant.DELETE_TODO, payload);
         },
         [Constant.TOGGLE_DONE] : (store, payload) => {
+            toaster.success(`Change done`);
             store.commit(Constant.TOGGLE_DONE, payload);
         },
         [Constant.UPDATE_TODO] : (store, payload) => { 
+            toaster.success(`Table updated`);
             store.commit(Constant.UPDATE_TODO, payload);
         },
     }
