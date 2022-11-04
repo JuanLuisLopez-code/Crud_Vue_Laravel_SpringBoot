@@ -1,7 +1,6 @@
 import Vuex from "vuex";
 import Constant from '../Constant';
 import shortid from 'shortid';
-
 export default Vuex.createStore({
     state: {
         todolist: [
