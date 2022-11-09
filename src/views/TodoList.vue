@@ -27,7 +27,7 @@ export default {
         const store = useStore();
 
         store.dispatch(Constant.INITIALIZE_TABLE)
-
+        
         const state = reactive({
             todolist: computed(() => store.getters["getMesas"])
         });

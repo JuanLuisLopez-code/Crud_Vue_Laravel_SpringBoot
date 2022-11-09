@@ -14,9 +14,6 @@ class MesaService {
     }
 
     update(id, name) {
-        console.log(id);
-        console.log(name);
-
         return http.put(`/crud/${id}`, { "name": name })
     }
 }
