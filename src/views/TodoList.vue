@@ -32,8 +32,6 @@ export default {
             todolist: computed(() => store.getters["getMesas"])
         });
 
-        console.log(state.todolist)
-
         return { state }
     }
 }

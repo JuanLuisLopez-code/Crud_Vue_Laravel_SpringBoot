@@ -12,10 +12,6 @@
           <input type="text" class="form-control" v-model="state.todoitemlocal.name" />
         </div>
         <div class="form-group">
-          <label htmlFor="desc">Descripcion :</label>
-          <textarea class="form-control" rows="3" id="desc" v-model="state.todoitemlocal.desc"></textarea>
-        </div>
-        <div class="form-group">
           <button type="button" class="btn btn-primary m-1" @click="addTodo">Create</button>
           <button type="button" class="btn btn-primary m-1" @click="cancel">Cancel</button>
         </div>

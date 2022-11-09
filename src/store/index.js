@@ -8,15 +8,6 @@ const toaster = createToaster({ position: "top-right" });
 
 
 export default Vuex.createStore({
-    // state: {
-    //     todolist: [
-    //         { "id": shortid.generate(), "name": "Mesa1", "done": false },
-    //         { "id": shortid.generate(), "name": "Mesa2", "done": false },
-    //         { "id": shortid.generate(), "name": "Mesa3", "done": false },
-    //     ]
-
-    //     // todolist : 
-    // },
     mutations: {
         [Constant.INITIALIZE_TABLE]: (state, payload) => {
             if (payload) {
@@ -28,8 +19,7 @@ export default Vuex.createStore({
             state.todoitem = { id: "", name: "", done: false };
         },
         [Constant.DELETE_TODO]: (state, payload) => {
-            let index = state.todolist.findIndex((item) => item.id === payload.id);
-            state.todolist.splice(index, 1);
+            state.todolist = state.todolist.filter((item) => item.id !== payload);
         },
         [Constant.TOGGLE_DONE]: (state, payload) => {
             let index = state.todolist.findIndex((item) => item.id === payload.id);
@@ -45,13 +35,15 @@ export default Vuex.createStore({
             const data = await MesaService.getAll()
             store.commit(Constant.INITIALIZE_TABLE, data.data.data);
         },
-        [Constant.ADD_TODO]: (store, payload) => {
+        [Constant.ADD_TODO]: async (store, payload) => {
             toaster.success(`Table added`);
+            await MesaService.create(payload.todoitem.name)
             store.commit(Constant.ADD_TODO, payload);
         },
-        [Constant.DELETE_TODO]: (store, payload) => {
+        [Constant.DELETE_TODO]: async (store, payload) => {
+            await MesaService.deleteOne(payload.id);
             toaster.success(`Table deleted`);
-            store.commit(Constant.DELETE_TODO, payload);
+            store.commit(Constant.DELETE_TODO, payload.id);
         },
         [Constant.TOGGLE_DONE]: (store, payload) => {
             toaster.success(`Change done`);

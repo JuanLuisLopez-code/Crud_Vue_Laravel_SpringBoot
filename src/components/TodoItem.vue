@@ -1,14 +1,11 @@
 <template>
-    <li :class="checked(todoitem.done)" @click="toggleDone(todoitem.id)">
+    <li :class="checked(todoitem.done)">
         <ul>
             <li>
                 {{ todoitem.id }}
             </li>
             <li>
                 {{ todoitem.name }}
-            </li>
-            <li>
-                {{ todoitem.done }}
             </li>
         </ul>
         <button @click.stop="deleteTodo(todoitem.id)">Delete</button>
@@ -32,9 +29,6 @@ export default {
         const checked = (done) => {
             return { "list-group-item": true, "list-group-item-success": done };
         }
-        const toggleDone = (id) => {
-            store.dispatch(Constant.TOGGLE_DONE, { id });
-        }
         const deleteTodo = (id) => {
             store.dispatch(Constant.DELETE_TODO, { id });
         }
@@ -42,7 +36,7 @@ export default {
             router.push({ name: 'update', params: { id } })
         }
 
-        return { toggleDone, deleteTodo, editTodo, checked }
+        return { deleteTodo, editTodo, checked }
     }
 }
 </script>
