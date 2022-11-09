@@ -15,15 +15,10 @@ export default Vuex.createStore({
             }
         },
         [Constant.ADD_TODO]: (state, payload) => {
-            state.todolist.push({ ...payload.todoitem, id: shortid.generate(), done: false });
-            state.todoitem = { id: "", name: "", done: false };
+            state.todolist.push({ ...payload.todoitem });
         },
         [Constant.DELETE_TODO]: (state, payload) => {
             state.todolist = state.todolist.filter((item) => item.id !== payload);
-        },
-        [Constant.TOGGLE_DONE]: (state, payload) => {
-            let index = state.todolist.findIndex((item) => item.id === payload.id);
-            state.todolist[index].done = !state.todolist[index].done;
         },
         [Constant.UPDATE_TODO]: (state, payload) => {
             let index = state.todolist.findIndex((item) => item.id === payload.todoitem.id);
@@ -36,8 +31,8 @@ export default Vuex.createStore({
             store.commit(Constant.INITIALIZE_TABLE, data.data.data);
         },
         [Constant.ADD_TODO]: async (store, payload) => {
-            toaster.success(`Table added`);
             await MesaService.create(payload.todoitem.name)
+            toaster.success(`Table added`);
             store.commit(Constant.ADD_TODO, payload);
         },
         [Constant.DELETE_TODO]: async (store, payload) => {
@@ -45,18 +40,18 @@ export default Vuex.createStore({
             toaster.success(`Table deleted`);
             store.commit(Constant.DELETE_TODO, payload.id);
         },
-        [Constant.TOGGLE_DONE]: (store, payload) => {
-            toaster.success(`Change done`);
-            store.commit(Constant.TOGGLE_DONE, payload);
-        },
-        [Constant.UPDATE_TODO]: (store, payload) => {
+        [Constant.UPDATE_TODO]: async (store, payload) => {
+            if (sessionStorage.getItem("id")) {
+                payload.todoitem.id = sessionStorage.getItem("id")
+            }
+            await MesaService.update(payload.todoitem.id, payload.todoitem.name)
             toaster.success(`Table updated`);
             store.commit(Constant.UPDATE_TODO, payload);
         },
     },
     getters: {
         getMesas(state) {
-          return state.todolist;
+            return state.todolist;
         },
-      },
+    },
 });
