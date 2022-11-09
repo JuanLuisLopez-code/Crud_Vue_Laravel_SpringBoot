@@ -2,52 +2,69 @@ import Vuex from "vuex";
 import Constant from '../Constant';
 import shortid from 'shortid';
 import { createToaster } from "@meforma/vue-toaster";
+import MesaService from "../services/Mesa.service"
 
-const toaster = createToaster({ position:"top-right"});
+const toaster = createToaster({ position: "top-right" });
 
 
 export default Vuex.createStore({
-    state: {
-        todolist: [
-            { "id": shortid.generate(), "name": "Mesa1", "done": false },
-            { "id": shortid.generate(), "name": "Mesa2", "done": false },
-            { "id": shortid.generate(), "name": "Mesa3", "done": false },
-        ]
-    },
+    // state: {
+    //     todolist: [
+    //         { "id": shortid.generate(), "name": "Mesa1", "done": false },
+    //         { "id": shortid.generate(), "name": "Mesa2", "done": false },
+    //         { "id": shortid.generate(), "name": "Mesa3", "done": false },
+    //     ]
+
+    //     // todolist : 
+    // },
     mutations: {
+        [Constant.INITIALIZE_TABLE]: (state, payload) => {
+            if (payload) {
+                state.todolist = payload;
+            }
+        },
         [Constant.ADD_TODO]: (state, payload) => {
             state.todolist.push({ ...payload.todoitem, id: shortid.generate(), done: false });
             state.todoitem = { id: "", name: "", done: false };
         },
-        [Constant.DELETE_TODO] :(state,payload)=> {
-            let index = state.todolist.findIndex((item)=>item.id === payload.id);
-            state.todolist.splice(index,1);
+        [Constant.DELETE_TODO]: (state, payload) => {
+            let index = state.todolist.findIndex((item) => item.id === payload.id);
+            state.todolist.splice(index, 1);
         },
-        [Constant.TOGGLE_DONE] :(state,payload)=> {
-            let index = state.todolist.findIndex((item)=>item.id === payload.id);
-            state.todolist[index].done= !state.todolist[index].done;
+        [Constant.TOGGLE_DONE]: (state, payload) => {
+            let index = state.todolist.findIndex((item) => item.id === payload.id);
+            state.todolist[index].done = !state.todolist[index].done;
         },
-        [Constant.UPDATE_TODO] :(state,payload)=> {
-            let index = state.todolist.findIndex((item)=>item.id === payload.todoitem.id);
+        [Constant.UPDATE_TODO]: (state, payload) => {
+            let index = state.todolist.findIndex((item) => item.id === payload.todoitem.id);
             state.todolist[index] = payload.todoitem;
         },
     },
     actions: {
-        [Constant.ADD_TODO] : (store, payload) => {
+        [Constant.INITIALIZE_TABLE]: async (store) => {
+            const data = await MesaService.getAll()
+            store.commit(Constant.INITIALIZE_TABLE, data.data.data);
+        },
+        [Constant.ADD_TODO]: (store, payload) => {
             toaster.success(`Table added`);
             store.commit(Constant.ADD_TODO, payload);
         },
-        [Constant.DELETE_TODO] : (store, payload) => { 
+        [Constant.DELETE_TODO]: (store, payload) => {
             toaster.success(`Table deleted`);
             store.commit(Constant.DELETE_TODO, payload);
         },
-        [Constant.TOGGLE_DONE] : (store, payload) => {
+        [Constant.TOGGLE_DONE]: (store, payload) => {
             toaster.success(`Change done`);
             store.commit(Constant.TOGGLE_DONE, payload);
         },
-        [Constant.UPDATE_TODO] : (store, payload) => { 
+        [Constant.UPDATE_TODO]: (store, payload) => {
             toaster.success(`Table updated`);
             store.commit(Constant.UPDATE_TODO, payload);
         },
-    }
+    },
+    getters: {
+        getMesas(state) {
+          return state.todolist;
+        },
+      },
 });

@@ -18,6 +18,7 @@
 import TodoItem from '../components/TodoItem.vue';
 import { reactive, computed } from 'vue'
 import { useStore } from 'vuex'
+import Constant from '../Constant';
 
 export default {
     components: { TodoItem },
@@ -25,9 +26,13 @@ export default {
 
         const store = useStore();
 
+        store.dispatch(Constant.INITIALIZE_TABLE)
+
         const state = reactive({
-            todolist: computed(() => store.state.todolist)
+            todolist: computed(() => store.getters["getMesas"])
         });
+
+        console.log(state.todolist)
 
         return { state }
     }

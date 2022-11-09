@@ -4,4 +4,5 @@ export default {
     TOGGLE_DONE: "toggleDone",
     DELETE_TODO: "deleteTodo",
     INITIALIZE_TODOITEM: "initializeTodoItem",
+    INITIALIZE_TABLE : "initializeTable"
 }
