@@ -1,9 +1,14 @@
 import Api from '@/services/Api'
 const laravar_url = "http://localhost:8001/api";
+const springboot_url = "http://localhost:8002/api";
 
 class MesaService {
     getAll() {
         return Api(`${laravar_url}`).get("/crud")
+    }
+
+    getAll_SpringBoot() {
+        return Api(`${springboot_url}`).get("/mesas")
     }
 
     create(name) {

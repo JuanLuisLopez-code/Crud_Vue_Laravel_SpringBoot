@@ -1,6 +1,5 @@
 import Vuex from "vuex";
 import Constant from '../Constant';
-import shortid from 'shortid';
 import { createToaster } from "@meforma/vue-toaster";
 import MesaService from "../services/Mesa.service"
 
@@ -27,8 +26,13 @@ export default Vuex.createStore({
     },
     actions: {
         [Constant.INITIALIZE_TABLE]: async (store) => {
-            const data = await MesaService.getAll()
-            store.commit(Constant.INITIALIZE_TABLE, data.data.data);
+            if (sessionStorage.getItem("type") == "SpringBoot") {
+                const SpringBoot = await MesaService.getAll_SpringBoot()
+                store.commit(Constant.INITIALIZE_TABLE, SpringBoot.data);
+            } else {
+                const Laravel = await MesaService.getAll()
+                store.commit(Constant.INITIALIZE_TABLE, Laravel.data.data);
+            }
         },
         [Constant.ADD_TODO]: async (store, payload) => {
             await MesaService.create(payload.todoitem.name)
