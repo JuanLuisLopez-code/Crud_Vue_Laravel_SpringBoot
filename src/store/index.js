@@ -20,7 +20,7 @@ export default Vuex.createStore({
             state.todolist = state.todolist.filter((item) => item.id !== payload);
         },
         [Constant.UPDATE_TODO]: (state, payload) => {
-            let index = state.todolist.findIndex((item) => item.id === payload.todoitem.id);
+            let index = state.todolist.findIndex((item) => item.id == payload.todoitem.id);
             state.todolist[index] = payload.todoitem;
         },
     },
@@ -35,22 +35,41 @@ export default Vuex.createStore({
             }
         },
         [Constant.ADD_TODO]: async (store, payload) => {
-            await MesaService.create(payload.todoitem.name)
-            toaster.success(`Table added`);
-            store.commit(Constant.ADD_TODO, payload);
+            if (sessionStorage.getItem("type") == "SpringBoot") {
+                const data = await MesaService.create_SpringBoot(payload.todoitem.name)
+                toaster.success(`Table added`);
+                store.commit(Constant.ADD_TODO, data.data);
+            } else {
+                const data = await MesaService.create(payload.todoitem.name)
+                toaster.success(`Table added`);
+                store.commit(Constant.ADD_TODO, data.data.data);
+            }
         },
         [Constant.DELETE_TODO]: async (store, payload) => {
-            await MesaService.deleteOne(payload.id);
-            toaster.success(`Table deleted`);
-            store.commit(Constant.DELETE_TODO, payload.id);
+            if (sessionStorage.getItem("type") == "SpringBoot") {
+                await MesaService.deleteOne_SpringBoot(payload.id);
+                toaster.success(`Table deleted`);
+                store.commit(Constant.DELETE_TODO, payload.id);
+            } else {
+                await MesaService.deleteOne(payload.id);
+                toaster.success(`Table deleted`);
+                store.commit(Constant.DELETE_TODO, payload.id);
+            }
         },
         [Constant.UPDATE_TODO]: async (store, payload) => {
             if (sessionStorage.getItem("id")) {
                 payload.todoitem.id = sessionStorage.getItem("id")
             }
-            await MesaService.update(payload.todoitem.id, payload.todoitem.name)
-            toaster.success(`Table updated`);
-            store.commit(Constant.UPDATE_TODO, payload);
+
+            if (sessionStorage.getItem("type") == "SpringBoot") {
+                await MesaService.update_SpringBoot(payload.todoitem.id, payload.todoitem.name)
+                toaster.success(`Table updated`);
+                store.commit(Constant.UPDATE_TODO, payload);
+            } else {
+                await MesaService.update(payload.todoitem.id, payload.todoitem.name)
+                toaster.success(`Table updated`);
+                store.commit(Constant.UPDATE_TODO, payload);
+            }
         },
     },
     getters: {

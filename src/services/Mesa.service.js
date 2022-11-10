@@ -1,26 +1,37 @@
 import Api from '@/services/Api'
-const laravar_url = "http://localhost:8001/api";
-const springboot_url = "http://localhost:8002/api";
+import secret from '../secret'
 
 class MesaService {
     getAll() {
-        return Api(`${laravar_url}`).get("/crud")
+        return Api(`${secret.laravar_url}`).get("/crud")
     }
 
     getAll_SpringBoot() {
-        return Api(`${springboot_url}`).get("/mesas")
+        return Api(`${secret.springboot_url}`).get("/mesas")
     }
 
     create(name) {
-        return Api(`${laravar_url}`).post("/crud/", { "name": name })
+        return Api(`${secret.laravar_url}`).post("/crud/", { "name": name })
+    }
+
+    create_SpringBoot(name) {
+        return Api(`${secret.springboot_url}`).post("/mesas/", { "name": name })
     }
 
     update(id, name) {
-        return Api(`${laravar_url}`).put(`/crud/${id}`, { "name": name })
+        return Api(`${secret.laravar_url}`).put(`/crud/${id}`, { "name": name })
+    }
+
+    update_SpringBoot(id, name) {
+        return Api(`${secret.springboot_url}`).put(`/mesas/${id}`, { "name": name })
     }
 
     deleteOne(id) {
-        return Api(`${laravar_url}`).delete(`/crud/${id}`)
+        return Api(`${secret.laravar_url}`).delete(`/crud/${id}`)
+    }
+
+    deleteOne_SpringBoot(id) {
+        return Api(`${secret.springboot_url}`).delete(`/mesas/${id}`)
     }
 }
 
